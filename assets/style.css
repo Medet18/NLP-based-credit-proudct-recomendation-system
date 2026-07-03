@@ -1,0 +1,244 @@
+/* ============================================================
+   Персональный финансовый помощник — refined fintech дизайн
+   Дизайн-токены, типографика, карточки, состояния, анимации
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root{
+  --bg:#F7F5F0;
+  --surface:#FFFFFF;
+  --ink:#16130F;
+  --muted:#6B6760;
+  --line:#E7E2D8;
+  --accent:#115E4A;
+  --accent-bright:#16A37B;
+  --gold:#C8A86B;
+  --match:#E6F2EC;
+  --radius:16px;
+  --shadow:0 1px 2px rgba(22,19,15,.04), 0 8px 24px rgba(22,19,15,.06);
+  --shadow-hover:0 2px 4px rgba(22,19,15,.06), 0 14px 36px rgba(22,19,15,.10);
+}
+
+/* --- общий фон и базовый шрифт --- */
+.stApp{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'IBM Plex Sans', sans-serif;
+}
+
+/* --- прячем дефолтный хром Streamlit --- */
+#MainMenu{visibility:hidden;}
+footer{visibility:hidden;}
+header[data-testid="stHeader"]{background:transparent; height:0;}
+[data-testid="stToolbar"]{display:none;}
+[data-testid="stDecoration"]{display:none;}
+
+/* контейнер чуть шире и с воздухом */
+.block-container{
+  padding-top:2.2rem;
+  padding-bottom:3rem;
+  max-width:1180px;
+}
+
+/* --- HERO-шапка --- */
+.hero{
+  border-bottom:1px solid var(--line);
+  padding-bottom:22px;
+  margin-bottom:30px;
+}
+.hero-mark{
+  display:flex; align-items:center; gap:10px;
+  font-family:'Fraunces', serif;
+  font-weight:600; font-size:15px; letter-spacing:.5px;
+  color:var(--accent); text-transform:uppercase;
+}
+.hero-dot{
+  width:9px; height:9px; border-radius:50%;
+  background:var(--accent-bright);
+  display:inline-block;
+}
+.hero-title{
+  font-family:'Fraunces', serif;
+  font-weight:600; font-size:40px; line-height:1.1;
+  color:var(--ink);
+  margin:14px 0 8px 0;
+}
+.hero-sub{
+  font-size:15px; color:var(--muted);
+  max-width:680px;
+}
+
+/* --- секция-заголовок --- */
+.section-h{
+  font-family:'Fraunces', serif;
+  font-weight:600; font-size:22px;
+  color:var(--ink);
+  margin:14px 0 16px 0;
+}
+
+/* --- поле ввода --- */
+.stTextInput input{
+  background:var(--surface) !important;
+  border:1px solid var(--line) !important;
+  border-radius:var(--radius) !important;
+  padding:14px 16px !important;
+  font-family:'IBM Plex Sans', sans-serif !important;
+  font-size:16px !important;
+  color:var(--ink) !important;
+  box-shadow:var(--shadow) !important;
+}
+.stTextInput input:focus{
+  border-color:var(--accent-bright) !important;
+  box-shadow:0 0 0 3px rgba(22,163,123,.12) !important;
+}
+.stTextInput label{
+  font-weight:500 !important; color:var(--ink) !important;
+}
+
+/* --- кнопки --- */
+.stButton button{
+  background:var(--accent) !important;
+  color:#fff !important;
+  border:none !important;
+  border-radius:var(--radius) !important;
+  padding:12px 22px !important;
+  font-family:'IBM Plex Sans', sans-serif !important;
+  font-weight:600 !important; font-size:15px !important;
+  box-shadow:var(--shadow) !important;
+  transition:transform .2s ease, box-shadow .2s ease, background .2s ease !important;
+}
+.stButton button:hover{
+  background:var(--accent-bright) !important;
+  transform:translateY(-2px) !important;
+  box-shadow:var(--shadow-hover) !important;
+}
+
+/* --- чипы-примеры --- */
+.chips{display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 4px 0;}
+.chip{
+  border:1px solid var(--line);
+  background:var(--surface);
+  border-radius:999px;
+  padding:7px 14px;
+  font-size:13px; color:var(--muted);
+  transition:background .2s ease, color .2s ease, border-color .2s ease;
+}
+.chip:hover{background:var(--match); color:var(--accent); border-color:var(--accent-bright);}
+
+/* --- карточка продукта --- */
+.card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:20px 20px 18px 20px;
+  margin-bottom:8px;
+  height:100%;
+  transition:transform .2s ease, box-shadow .2s ease;
+  animation:rise .5s ease both;
+}
+.card:hover{transform:translateY(-2px); box-shadow:var(--shadow-hover);}
+
+.card-top{display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;}
+.bank-badge{
+  background:var(--match);
+  color:var(--accent);
+  font-size:12px; font-weight:600;
+  padding:5px 11px; border-radius:999px;
+  letter-spacing:.2px;
+}
+.cat-icon{font-size:20px;}
+
+.card-title{
+  font-family:'Fraunces', serif;
+  font-weight:600; font-size:18px; line-height:1.25;
+  color:var(--ink); margin-bottom:12px;
+  min-height:46px;
+}
+
+.cond-row{font-size:13.5px; color:var(--muted); margin:3px 0;}
+.cond-row b{color:var(--ink); font-weight:500;}
+.mono{font-family:'IBM Plex Mono', monospace; color:var(--ink);}
+
+/* индикатор релевантности — тонкая полоса */
+.rel-wrap{margin:14px 0 12px 0;}
+.rel-label{font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.6px; margin-bottom:5px;}
+.rel-bar{height:6px; background:var(--line); border-radius:999px; overflow:hidden;}
+.rel-fill{height:100%; background:var(--accent-bright); border-radius:999px;}
+
+/* блок объяснения — фиксированная высота, длинный текст обрезается */
+.explain{
+  background:var(--match);
+  border-radius:12px;
+  padding:12px 14px;
+  margin:12px 0;
+  font-size:13.5px; color:var(--ink);
+  height:110px;
+  overflow:hidden;
+}
+.explain .crit{display:flex; align-items:flex-start; gap:7px; margin:3px 0;}
+.explain .crit span:last-child{
+  display:-webkit-box;
+  -webkit-line-clamp:4;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+/* строка калькулятора */
+.calc-line{
+  border-top:1px dashed var(--line);
+  padding-top:12px; margin-top:6px;
+  font-family:'IBM Plex Mono', monospace;
+  font-size:13.5px; color:var(--ink);
+}
+.calc-line .big{font-size:16px; font-weight:600; color:var(--accent);}
+
+/* --- "что система поняла" чипы --- */
+.understood{
+  display:flex; flex-wrap:wrap; gap:8px;
+  margin-top:8px;
+}
+.u-chip{
+  background:var(--surface); border:1px solid var(--line);
+  border-radius:999px; padding:7px 13px; font-size:13px;
+}
+.u-chip b{color:var(--accent); font-family:'IBM Plex Mono', monospace;}
+
+/* --- мягкое пустое/уточняющее состояние --- */
+.soft-note{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-left:3px solid var(--gold);
+  border-radius:12px;
+  padding:14px 16px;
+  color:var(--ink); font-size:14px;
+  margin:10px 0;
+}
+
+/* --- вкладки --- */
+.stTabs [data-baseweb="tab-list"]{gap:6px; border-bottom:1px solid var(--line);}
+.stTabs [data-baseweb="tab"]{
+  font-family:'IBM Plex Sans', sans-serif;
+  font-weight:500; color:var(--muted);
+  padding:10px 16px;
+}
+.stTabs [aria-selected="true"]{color:var(--accent) !important;}
+
+/* --- анимация появления карточек --- */
+@keyframes rise{
+  from{opacity:0; transform:translateY(12px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+/* адаптив: на узком экране карточки в колонку (Streamlit columns сам стекуется,
+   но подстрахуем отступ) */
+@media (max-width:900px){
+  .hero-title{font-size:30px;}
+  .card{margin-bottom:14px;}
+}
+
+/* модальное окно "Подробнее" — шире, чтобы помещалось на экране ноутбука */
+div[role="dialog"]{
+  width: min(720px, 92vw) !important;
+  max-width: 92vw !important;
+}
