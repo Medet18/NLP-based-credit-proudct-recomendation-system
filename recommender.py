@@ -160,9 +160,25 @@ class Recommender:
         from sklearn.metrics.pairwise import cosine_similarity
         return cosine_similarity(qv, self._matrix).ravel()
 
+    # def _heuristic_rerank(self, query, scores, top_n=10):
+    #     """Переранжирование топ-N кандидатов: бонус за дословное совпадение
+    #     значимых слов запроса с текстом продукта (детерминированно)."""
+    #     q_tokens = set(self._tokenize(query))
+    #     order = list(np.argsort(scores)[::-1][:top_n])
+    #     reranked = []
+    #     for i in order:
+    #         overlap = len(q_tokens & set(self._tokenize(self.texts[i])))
+    #         reranked.append((i, scores[i] + 0.05 * overlap))
+    #     reranked.sort(key=lambda x: x[1], reverse=True)
+    #     # собираем полный вектор оценок: реранкированные сверху, остальные ниже
+    #     new_scores = np.array(scores, dtype=float)
+    #     for rank_pos, (i, s) in enumerate(reranked):
+    #         new_scores[i] = s
+    #     return new_scores
     def _heuristic_rerank(self, query, scores, top_n=10):
         """Переранжирование топ-N кандидатов: бонус за дословное совпадение
-        значимых слов запроса с текстом продукта (детерминированно)."""
+        значимых слов запроса с текстом продукта (детерминированно).
+        Бонус за ставку применяется позже, в recommend, после фильтрации."""
         q_tokens = set(self._tokenize(query))
         order = list(np.argsort(scores)[::-1][:top_n])
         reranked = []
@@ -450,6 +466,22 @@ class Recommender:
         # оставляем только семантику (чтобы система не молчала)
         if not candidates:
             candidates = [(i, float(sims[i])) for i in range(len(self.catalog))]
+
+        # бонус за выгодность СРЕДИ отфильтрованных кандидатов: при сопоставимой
+        # релевантности выше поднимается продукт с меньшей ставкой. Нормализация
+        # ставок идёт по самим кандидатам (обычно одна категория), продукты без
+        # ставки (rate <= 0) бонуса не получают.
+        cand_rates = {i: float(self.catalog[i].get("rate_numeric") or 0)
+                      for i, _ in candidates}
+        cand_rates = {i: r for i, r in cand_rates.items() if r > 0}
+        if len(cand_rates) >= 2:
+            lo, hi = min(cand_rates.values()), max(cand_rates.values())
+            span = (hi - lo) or 1.0
+            candidates = [
+                (i, s + (0.2 * (1 - (cand_rates[i] - lo) / span) if i in cand_rates else 0.0))
+                for i, s in candidates
+            ]
+
 
         candidates.sort(key=lambda x: x[1], reverse=True)
         top = candidates[:top_k]
